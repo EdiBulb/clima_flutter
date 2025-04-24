@@ -1,29 +1,28 @@
-import 'dart:io';
-
-void main() {
-  performTasks();
+void normalFunction() {
+  print('함수 시작');
+  print('함수 끝');
+}
+Future<String> orderPizza() async{
+  await Future.delayed(Duration(seconds: 3));
+  return '페퍼로니 피자';
 }
 
-void performTasks() {
-  task1();
-  task2();
-  task3();
+void main() async {
+  // normalFunction();
+  // print('쇼핑 시작');
+  // await futureFunction();
+  // print('쇼핑 끝');
+
+  print('피자 주문...');
+  String pizza = await orderPizza();
+  print('받은 피자: $pizza');
 }
 
-void task1() {
-  String result = 'task 1 data';
-  print('Task 1 complete');
+Future<void> futureFunction() async {
+  print('택배 주문 완료');
+
+  await Future.delayed(Duration(seconds: 2));
+  print('택배 도착!');
 }
 
-void task2() {
-  Duration threeSeconds = Duration(seconds: 3);
-  sleep(threeSeconds);
 
-  String result = 'task 2 data';
-  print('Task 2 complete');
-}
-
-void task3() {
-  String result = 'task 3 data';
-  print('Task 3 complete');
-}
