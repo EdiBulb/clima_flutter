@@ -1,60 +1,51 @@
+import 'package:clima_flutter/services/location.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
 class LoadingScreen extends StatefulWidget {
-
   @override
   _LoadingScreenState createState() => _LoadingScreenState();
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
-
   // lifecycle method.
   @override
   void initState() {
     super.initState();
-
     getLocation();
   }
 
   // return current location.
-  // void getLocation() async {
-  //   Position position = await Geolocator.getCurrentPosition(
-  //     locationSettings: const LocationSettings(accuracy: LocationAccuracy.low),
-  //   );
-  //   print(position);
-  // }
   void getLocation() async {
-    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      print('위치 서비스가 꺼져 있어요.');
-      return;
+    Location location = Location();
+    await location.getCurrentLocation();
+    print(location.latitude);
+    print(location.longitude);
+  }
+
+
+  void somethingThatExpectsLessThan10(int n) {
+    if (n > 10) {
+      throw 'n is greater than 10, n should always be less than 10.';
     }
-
-    LocationPermission permission = await Geolocator.checkPermission();
-
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        print('위치 권한 거부됨');
-        return;
-      }
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      print('위치 권한이 영구적으로 거부됨');
-      await Geolocator.openAppSettings(); // 앱 설정으로 유도
-      return;
-    }
-
-    Position position = await Geolocator.getCurrentPosition();
-    print(position);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    String myMargin = '15';
+    double? myMarginAsADouble;
 
+    try {
+      myMarginAsADouble = double.parse(myMargin);
+    } catch (e) {
+      print(e);
+      // myMarginAsADouble = 30.0;
+    }
+    return Scaffold(
+      body: Container(
+        margin: EdgeInsets.all(myMarginAsADouble ?? 30.0),
+        color: Colors.red,
+      ),
     );
   }
 }
