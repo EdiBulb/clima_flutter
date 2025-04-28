@@ -1,11 +1,7 @@
 import 'package:clima_flutter/screens/location_screen.dart';
-import 'package:clima_flutter/services/location.dart';
-import 'package:clima_flutter/services/networking.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-
-// apiKey는 변하지 않는 값이라서 상수화
-const apiKey = 'f1a9cbd27abe2b22fd966f3723a4145b';
+import 'package:clima_flutter/services/weather.dart';
 
 class LoadingScreen extends StatefulWidget {
   @override
@@ -25,16 +21,9 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
   // 현재 위치를 받아오고 날씨 데이터를 가져오는 함수
   void getLocationData() async {
-    try {
-      // 현재 위치 받아오기
-      Location location = Location();
-      await location.getCurrentLocation();
+    // create object
+    var weatherData = await WeatherModel().getLocationWeather(); // Future 결과값을 사용할거라 await을 붙임
 
-      // 네트워크 요청
-      NetworkHelper networkHelper = NetworkHelper(
-          'https://api.openweathermap.org/data/2.5/weather?lat=${location.latitude}&lon=${location.longitude}&appid=$apiKey&units=metric');
-
-      var weatherData = await networkHelper.getData();
 
       // LocationScreen으로 이동
       Navigator.push(
@@ -45,10 +34,6 @@ class _LoadingScreenState extends State<LoadingScreen> {
           },
         ),
       );
-
-    } catch (e) {
-      print(e);
-    }
   }
 
   @override

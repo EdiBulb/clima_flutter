@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:clima_flutter/utilities/constants.dart';
+import 'package:flutter/material.dart';
 
 class CityScreen extends StatefulWidget {
   @override
@@ -24,23 +24,27 @@ class _CityScreenState extends State<CityScreen> {
               Align(
                 alignment: Alignment.topLeft,
                 child: TextButton(
-                  onPressed: () {},
-                  child: Icon(
-                    Icons.arrow_back_ios,
-                    size: 50.0,
-                  ),
+                  onPressed: () {
+                    Navigator.pop(context); // 이전 페이지로 돌아가기
+                  },
+                  child: Icon(Icons.arrow_back_ios, size: 50.0),
                 ),
               ),
               Container(
                 padding: EdgeInsets.all(20.0),
-                child: null,
+                child: TextField(
+                  style: TextStyle(color: Colors.black),
+                  decoration: kTextFieldInputDecoration,
+
+                  // TextField value 가져오기
+                  onChanged: (value){
+                    print(value);
+                  },
+                ),
               ),
               TextButton(
                 onPressed: () {},
-                child: Text(
-                  'Get Weather',
-                  style: kButtonTextStyle,
-                ),
+                child: Text('Get Weather', style: kButtonTextStyle),
               ),
             ],
           ),

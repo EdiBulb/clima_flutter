@@ -1,4 +1,30 @@
+import 'package:clima_flutter/services/location.dart';
+import 'package:clima_flutter/services/networking.dart';
+
+
+// apiKey는 변하지 않는 값이라서 상수화
+const apiKey = 'f1a9cbd27abe2b22fd966f3723a4145b';
+const openWeatherMapURL = 'https://api.openweathermap.org/data/2.5/weather';
+
 class WeatherModel {
+
+  // it was in loading_screen.dart but,  moved to activate location change button.
+  Future<dynamic> getLocationWeather() async {
+    // 현재 위치 받아오기
+    Location location = Location();
+    await location.getCurrentLocation();
+
+    // 네트워크 요청
+    NetworkHelper networkHelper = NetworkHelper(
+        '$openWeatherMapURL?lat=${location.latitude}&lon=${location.longitude}&appid=$apiKey&units=metric');
+
+    var weatherData = await networkHelper.getData();
+
+    return weatherData;
+  }
+
+
+
   String getWeatherIcon(int condition) {
     if (condition < 300) {
       return '🌩';

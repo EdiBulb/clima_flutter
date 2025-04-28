@@ -2,6 +2,8 @@ import 'package:clima_flutter/services/weather.dart';
 import 'package:clima_flutter/utilities/constants.dart';
 import 'package:flutter/material.dart';
 
+import 'city_screen.dart';
+
 class LocationScreen extends StatefulWidget {
   LocationScreen({this.locationWeather});
 
@@ -31,6 +33,13 @@ class _LocationScreenState extends State<LocationScreen> {
   void updateUI(dynamic weatherData) {
     // 변하는 값이니까 setState()
     setState(() {
+      if (weatherData == null) { // 만약 weatherData가 어떠한 이유로 fetch되지 않는다면, 앱이 crash되지 않도록 다음의 조치를 취한다.
+        temperature = 0;
+        weatherIcon = 'Error';
+        weatherMessage = 'Unable to get weather data';
+        cityName = '';
+        return; // 뒤의 코드로 넘어가는 것을 막는다.
+      }
       double temp = weatherData['main']['temp'];
       temperature = temp.toInt();
       var condition = weatherData['weather'][0]['id'];
@@ -68,11 +77,19 @@ class _LocationScreenState extends State<LocationScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      // 위치변경 버튼 눌렸을 때, 새로 위치날씨 데이터 받고, update하기
+                      var weatherData = await weather.getLocationWeather(); // Future이므로, 바로 다음 줄에 써야하므로 값이 있어야함, await을 붙인다.
+                      updateUI(weatherData);
+                    },
                     child: Icon(Icons.near_me, size: 50.0),
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (BuildContext context){
+                        return CityScreen();
+                      }));
+                    },
                     child: Icon(Icons.location_city, size: 50.0),
                   ),
                 ],
