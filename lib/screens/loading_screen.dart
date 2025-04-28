@@ -1,6 +1,10 @@
+
 import 'package:clima_flutter/services/location.dart';
+import 'package:clima_flutter/services/networking.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
+
+// apiKey는 변하지 않는 값이라서 상수화
+const apiKey = 'f1a9cbd27abe2b22fd966f3723a4145b';
 
 class LoadingScreen extends StatefulWidget {
   @override
@@ -8,44 +12,34 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
+  //api 사용에 필요한 위도 경도
+  late double latitude;
+  late double longitude;
+
   // lifecycle method.
   @override
   void initState() {
     super.initState();
-    getLocation();
+    getLocationData();
+
   }
 
   // return current location.
-  void getLocation() async {
+  void getLocationData() async {
     Location location = Location();
     await location.getCurrentLocation();
-    print(location.latitude);
-    print(location.longitude);
-  }
+    latitude = location.latitude!;
+    longitude = location.longitude!;
 
+    // 데이터 받아오기
+    NetworkHelper networkHelper = NetworkHelper(
+        'https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$apiKey');
 
-  void somethingThatExpectsLessThan10(int n) {
-    if (n > 10) {
-      throw 'n is greater than 10, n should always be less than 10.';
-    }
+    var weatherData = await networkHelper.getData();
   }
 
   @override
   Widget build(BuildContext context) {
-    String myMargin = '15';
-    double? myMarginAsADouble;
-
-    try {
-      myMarginAsADouble = double.parse(myMargin);
-    } catch (e) {
-      print(e);
-      // myMarginAsADouble = 30.0;
-    }
-    return Scaffold(
-      body: Container(
-        margin: EdgeInsets.all(myMarginAsADouble ?? 30.0),
-        color: Colors.red,
-      ),
-    );
+    return Scaffold();
   }
 }
