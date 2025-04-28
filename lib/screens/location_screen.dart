@@ -85,10 +85,15 @@ class _LocationScreenState extends State<LocationScreen> {
                     child: Icon(Icons.near_me, size: 50.0),
                   ),
                   TextButton(
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (BuildContext context){
+                    onPressed: () async { // pop을 하면 그 값을 typedName에 담을 것임.
+                      var typedName = await Navigator.push(context, MaterialPageRoute(builder: (BuildContext context){
                         return CityScreen();
                       }));
+                      if (typedName != null) {
+                        var weatherData = await weather.getCityWeather(typedName);
+                        updateUI(weatherData);
+
+                      }
                     },
                     child: Icon(Icons.location_city, size: 50.0),
                   ),

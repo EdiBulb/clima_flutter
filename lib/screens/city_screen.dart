@@ -7,6 +7,8 @@ class CityScreen extends StatefulWidget {
 }
 
 class _CityScreenState extends State<CityScreen> {
+  String? cityName; // cityName으로 값을 받을 예정
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,12 +40,15 @@ class _CityScreenState extends State<CityScreen> {
 
                   // TextField value 가져오기
                   onChanged: (value){
-                    print(value);
+                    cityName = value;
+
                   },
                 ),
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                   Navigator.pop(context,cityName);
+                },
                 child: Text('Get Weather', style: kButtonTextStyle),
               ),
             ],

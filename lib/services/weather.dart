@@ -8,6 +8,14 @@ const openWeatherMapURL = 'https://api.openweathermap.org/data/2.5/weather';
 
 class WeatherModel {
 
+  // 입력한 city 날씨 가져오기
+  Future<dynamic> getCityWeather(String cityName) async {
+    NetworkHelper networkHelper = NetworkHelper('$openWeatherMapURL?q=$cityName&appid=$apiKey&units=metric');
+
+    var weatherData = await networkHelper.getData();
+    return weatherData;
+  }
+
   // it was in loading_screen.dart but,  moved to activate location change button.
   Future<dynamic> getLocationWeather() async {
     // 현재 위치 받아오기
