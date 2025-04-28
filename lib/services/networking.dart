@@ -7,12 +7,13 @@ class NetworkHelper {
 
   final String url;
 
-  Future<void> getData() async {
+  Future getData() async {
     // await으로 기다려서 받는다.
 
     http.Response response = await http.get(
         Uri.parse(url)); // 현재 위치로 입력
 
+    // 반응이 있으면 데이터를 가져온다.
     if (response.statusCode == 200) {
       String data = response.body;
 
